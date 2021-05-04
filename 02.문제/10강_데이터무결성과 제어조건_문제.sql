@@ -1,4 +1,5 @@
---1. Employee테이블의구조를 복사하여EMP_SAMPLE란 이름의 테이블을만드세요 사원테이블의사원 번호칼럼에 테이블 레벨로primarykey제약조건을지정하되 제약조건이름은my_emp_pk로 지정하세요.
+--1. Employee테이블의구조를 복사하여EMP_SAMPLE란 이름의 테이블을만드세요 
+--  사원테이블의사원 번호칼럼에 테이블 레벨로 primarykey제약조건을지정하되 제약조건이름은 my_emp_pk로 지정하세요.
 CREATE TABLE EMP_SAMPLE
 AS SELECT *FROM employee
 WHERE 1=0;
