@@ -51,7 +51,9 @@ ORDER BY emp.eno DESC;
 SELECT emp.ename AS "이름", emp.dno AS"부서번호",coo.ename AS"동료"
 FROM employee emp, employee coo
 WHERE emp.ename = 'SCOTT'
-AND emp.dno = coo.dno;
+AND emp.dno = coo.dno
+AND coo.ename <> 'SCOTT';
+
 
 --10. Self 조인을 사용하여WARD 사원보다늦게 입사한 사원의 이름과 입사일을출력하세요.
 SELECT ward.hiredate AS"WARD의 입사일",aft.ename AS"후배 이름",aft.hiredate AS"후배 입사일"

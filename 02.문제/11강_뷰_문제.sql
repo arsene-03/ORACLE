@@ -39,7 +39,7 @@ VALUES (5500,'Zinna',10,'1050','CLERK');
 
 SELECT * FROM v_em_dno;
 
---6.이미 생성된 뷰(   v_em_dno)에 대해서 읽기 전용 속성을 부여해보자
+--6.이미 생성된 뷰(v_em_dno)에 대해서 읽기 전용 속성을 부여해보자
 CREATE OR REPLACE VIEW v_em_dno
 AS SELECT eno,ename,dno,salary,job
 FROM employee
