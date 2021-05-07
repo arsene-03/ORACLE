@@ -93,6 +93,7 @@ BEGIN
 END;
 
 --6. 다음과 같은 테이블(Student)을만들고 데이터를입력한다.
+SET SERVEROUTPUT ON;
 CREATE SEQUENCE seq_stu_id;
 
 CREATE TABLE student2(
