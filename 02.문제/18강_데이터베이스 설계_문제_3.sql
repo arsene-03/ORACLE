@@ -8,13 +8,11 @@ CREATE TABLE customer (
 	customer_poin	number DEFAULT 0
 );
 
-ALTER TABLE customer 
-ADD CONSTRAINT customer_pk PRIMARY KEY (customer_id);
-
 INSERT INTO customer 
 VALUES ('gkrwnsvb','최학준','dbswns03','','','','');
 
 select * from customer;
+DROP TABLE customer;
 ----------------------------------------------------------------
 
 CREATE TABLE book (
@@ -24,8 +22,6 @@ CREATE TABLE book (
 	book_publiser nvarchar2(30),
 	book_author nvarchar2(10)NOT NULL
 );
-ALTER TABLE book 
-ADD CONSTRAINT book_pk PRIMARY KEY (book_id);
 
 CREATE SEQUENCE seq_book_id;
 
@@ -38,87 +34,83 @@ select * from book;
 
 
 CREATE TABLE borrowbook (
-	customer_id	varchar2(30),
-	book_id	varchar2(30),
+	borrow_id varchar2(30),
+    customer_id2	varchar2(30),
+	book_id2	varchar2(30),
 	borrow_date	date,
 	borrow_dateslip	date
 );
-ALTER TABLE borrowbook
-ADD CONSTRAINT borrowbook_customer_id_fk FOREIGN KEY (customer_id)
-REFERENCES customer(customer_id);
-
-ALTER TABLE borrowbook
-ADD CONSTRAINT borrowbook_book_id_fk FOREIGN KEY (book_id)
-REFERENCES book(book_id);
+CREATE SEQUENCE seq_borrowbook_id;
 
 INSERT INTO borrowbook 
-VALUES ('gkrwnsvb','book2',to_date(sysdate),to_date(sysdate)+7);
+VALUES ('borrow'||seq_borrowbook_id.nextval,'gkrwnsvb','book2',to_date(sysdate),to_date(sysdate)+7);
 
 select * from borrowbook;
 
-delete 
+-----------------------------------------------------------------------------------------
 
-CREATE TABLE "favorite" (
-	"book_id"	varchar(100)		NOT NULL
+
+CREATE TABLE favoritBook(
+    borrow_id3 varchar2(30) not null
 );
 
-CREATE TABLE "report" (
-	"book_id"	varchar(100)		NOT NULL,
-	"customer_id2"	varchar(100)		NOT NULL,
-	"report_text"	nclob		NULL
+INSERT INTO favoritBook
+VALUES ('borrow1');
+
+select * FROM favoritBook;
+
+-------------------------------------------------------------------------------------------
+CREATE TABLE bookReport (
+	borrow_id2 varchar2(30),
+	report_text	NCLOB
 );
 
-CREATE TABLE "del_customer" (
-	"customer_id"	varchar(100)		NULL,
-	"delcustomer_name"	nvarchar(10)		NOT NULL,
-	"customer_pwd"	varchar(100)		NOT NULL,
-	"customer_phone"	number		NULL,
-	"customer_age"	number(3)		NULL,
-	"customer_gender"	varchar(3)		NULL,
-	"customer_point"	number(100)		NULL
+INSERT INTO bookReport
+VALUES ('borrow1','이책은 재미있다.');
+
+select * FROM bookReport;
+
+----------------제약조건설정--------------------------------
+ALTER TABLE customer ADD CONSTRAINT CUSTOMER_PK PRIMARY KEY (
+	customer_id
 );
 
-
-
-CREATE TABLE "del_book" (
-	"book_id"	varchar(100)		NOT NULL,
-	"book_name"	varchar(100)		NULL,
-	"book_pubdate"	date		NULL,
-	"book_publiser"	varchar(100)		NULL,
-	"book_author"	varchar(10)		NULL
+ALTER TABLE book ADD CONSTRAINT BOOK_PK PRIMARY KEY (
+	book_id
 );
 
-
-
-ALTER TABLE "borrowbook" ADD CONSTRAINT "PK_BORROWBOOK" PRIMARY KEY (
-	"customer_id",
-	"book_id"
+ALTER TABLE borrowbook ADD CONSTRAINT BORROWBOOK_PK PRIMARY KEY (
+	borrow_id
 );
 
-ALTER TABLE "favorite" ADD CONSTRAINT "PK_FAVORITE" PRIMARY KEY (
-	"book_id"
-);
-
-ALTER TABLE "report" ADD CONSTRAINT "PK_REPORT" PRIMARY KEY (
-	"book_id"
-);
-
-ALTER TABLE "book" ADD CONSTRAINT "PK_BOOK" PRIMARY KEY (
-	"book_id"
-);
-
-
-
-ALTER TABLE "favorite" ADD CONSTRAINT "FK_borrowbook_TO_favorite_1" FOREIGN KEY (
-	"book_id"
+ALTER TABLE borrowbook ADD CONSTRAINT customer_TO_borrowbook_FK FOREIGN KEY (
+	customer_id2
 )
-REFERENCES "borrowbook" (
-	"book_id"
+REFERENCES customer (
+	customer_id
 );
 
-ALTER TABLE "report" ADD CONSTRAINT "FK_borrowbook_TO_report_1" FOREIGN KEY (
-	"book_id"
+ALTER TABLE borrowbook ADD CONSTRAINT book_TO_borrowbook_FK FOREIGN KEY (
+	book_id2
 )
-REFERENCES "borrowbook" (
-	"book_id"
+REFERENCES book (
+	book_id
 );
+
+ALTER TABLE favoritBook ADD CONSTRAINT borrowbook_TO_favoritBook_FK FOREIGN KEY (
+	borrow_id3
+)
+REFERENCES borrowbook (
+	borrow_id
+);
+
+ALTER TABLE bookReport ADD CONSTRAINT borrowbook_TO_bookReport_FK FOREIGN KEY (
+	borrow_id2
+)
+REFERENCES borrowbook (
+	borrow_id
+);
+
+commit;
+
+
