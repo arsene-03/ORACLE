@@ -181,3 +181,5 @@ SELECT * FROM dept_copy;
 
 DELETE FROM dept_origin
 WHERE dno = 20;
+
+
