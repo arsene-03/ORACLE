@@ -5,7 +5,8 @@ CREATE TABLE customer (
 	customer_phone	number(30),
 	customer_age	number(3),
 	customer_gender	nvarchar2(3),
-	customer_poin	number DEFAULT 0
+	customer_poin	number DEFAULT 0,
+    customer_condition nvarchar2(2)
 );
 
 INSERT INTO customer 
@@ -68,38 +69,6 @@ select * from book;
 
 ----------------------------------------------------------------------------------------
 
-CREATE TABLE bookLog
-AS SELECT * FROM book;
-
-ALTER TABLE bookLog
-ADD modType nchar(2);
-
-CREATE OR REPLACE TRIGGER trigger_book
-    AFTER DELETE
-    ON book
-    FOR Each row
-DECLARE
-    b_modType NCHAR(2);    
-BEGIN
-    IF updating THEN
-        DBMS_OUTPUT.PUT_LINE('업데이트 트리거가 발생했습니다.');
-        b_modType := '수정';
-    ELSIF deleting THEN
-        DBMS_OUTPUT.PUT_LINE('삭제 트리거가 발생했습니다.');
-        b_modType := '삭제';
-    ELSIF inserting THEN
-        DBMS_OUTPUT.PUT_LINE('생성 트리거가 발생했습니다.');
-        b_modType := '생성';
-    END IF;
-    INSERT INTO customerLog
-    VALUES(:old.book_id, :old.book_name, :old.book_pubdate,
-           :old.book_publiser, :old.book_author, b_modType
-);
-END;
-
-----------------------------------------------------------------------------------------
-
-
 CREATE TABLE borrowbook (
 	borrow_id varchar2(30),
     customer_id2	varchar2(30),
@@ -111,23 +80,34 @@ CREATE SEQUENCE seq_borrowbook_id;
 
 INSERT INTO borrowbook 
 VALUES ('borrow'||seq_borrowbook_id.nextval,'gkrwnsvb','book2',to_date(sysdate),to_date(sysdate)+7);
-
 select * from borrowbook;
 
-delete FROM borrowbook WHERE customer_id2='gkrwnsvb';
+delete FROM borrowbook
+Where borrow_id = 'borrow1';
 -----------------------------------------------------------------------------------------
 
-
-CREATE TABLE favoritBook(
-    borrow_id3 varchar2(30) not null
+select * from favoritbook;
+CREATE TABLE favoritbook(
+borrow_id2 varchar2(30)
 );
+ALTER TABLE favoritbook
+ADD modType nchar(2);
 
-INSERT INTO favoritBook
-VALUES ('borrow1');
-
-select * FROM favoritBook;
-
-delete FROM favoritBook WHERE borrow_id3= 'borrow1';
+CREATE OR REPLACE TRIGGER trigger_favoritbook
+    AFTER INSERT
+    ON borrowbook
+    FOR Each row
+DECLARE
+    b_modType NCHAR(2);    
+BEGIN
+    IF inserting THEN
+        DBMS_OUTPUT.PUT_LINE('생성 트리거가 발생했습니다.');
+        b_modType := '대여';
+    END IF;
+    INSERT INTO favoritbook
+    VALUES(:new.borrow_id, b_modType
+);
+END;
 -------------------------------------------------------------------------------------------
 CREATE TABLE bookReport (
 	borrow_id2 varchar2(30),
@@ -155,11 +135,11 @@ ALTER TABLE borrowbook ADD CONSTRAINT BORROWBOOK_PK PRIMARY KEY (
 	borrow_id
 );
 
-ALTER TABLE borrowbook ADD CONSTRAINT customer_TO_borrowbook_FK FOREIGN KEY (
+ALTER TABLE borrowbook ADD CONSTRAINT customerLog_TO_borrowbook_FK FOREIGN KEY (
 	customer_id2
 
 )
-REFERENCES customer (
+REFERENCES customerLog (
 	customer_id
 );
 
@@ -172,12 +152,15 @@ REFERENCES book (
 )
 on delete cascade;
 
-ALTER TABLE favoritBook ADD CONSTRAINT borrowbook_TO_favoritBook_FK FOREIGN KEY (
-	borrow_id3
+
+
+ALTER TABLE favoritbook ADD CONSTRAINT borrowbook_TO_favoritbook_FK FOREIGN KEY (
+	borrow_id2
 )
 REFERENCES borrowbook (
 	borrow_id
-);
+)
+on delete cascade;
 
 ALTER TABLE bookReport ADD CONSTRAINT borrowbook_TO_bookReport_FK FOREIGN KEY (
 	borrow_id2
