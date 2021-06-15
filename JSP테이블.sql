@@ -24,30 +24,70 @@ VALUES ('홍길동', 'hong', '1234', 'hong@naver.com', '010-1234-5678', 0);
 
 SELECT * FROM member;
 
+
+
 -- 카페 주문 프로그램 가격표
 
-CREATE TABLE cafeMenu(
-    coffeeName VARCHAR2(30) PRIMARY KEY,
-    tall NUMBER(30),
-    grande NUMBER(30),
-    venti NUMBER(30)
+CREATE TABLE coffeeMenu(
+    coffeeCode Number PRIMARY KEY,
+    coffeeName NVARCHAR2(100) NOT NULL,
+    coffeeType NVARCHAR2(10) NOT NULL,
+    coffeePrice NUMBER NOT NULL
 );
 
-INSERT INTO cafeMenu
-VALUES ('dolceLatte',5600,6100,6600);
-INSERT INTO cafeMenu
-VALUES ('whiteChocoMocha',5600,6100,6600);
-INSERT INTO cafeMenu
-VALUES ('cafeMocha', 5100,5600,6100);
-INSERT INTO cafeMenu
-VALUES ('cafeLatte', 4600,5100,5600);
-INSERT INTO cafeMenu
-VALUES ('americano', 4100,4600,5100);
-INSERT INTO cafeMenu
-VALUES ('todaycoffee', 3800,4300,4800);
-INSERT INTO cafeMenu
-VALUES ('bvdm', 5600,6100,6600);
+create SEQUENCE coffee_seq
+NOCACHE;
 
-select * FROM cafeMenu;
-    
+INSERT INTO coffeeMenu
+VALUES (coffee_seq.nextval,'돌체 라떼','톨',5600);
+INSERT INTO coffeeMenu
+VALUES (coffee_seq.nextval,'돌체 라떼','그란데',6100);
+INSERT INTO coffeeMenu
+VALUES (coffee_seq.nextval,'돌체 라떼','벤티',6600);
+
+INSERT INTO coffeeMenu
+VALUES (coffee_seq.nextval,'화이트 초콜릿 모카','톨',5600);
+INSERT INTO coffeeMenu
+VALUES (coffee_seq.nextval,'화이트 초콜릿 모카','그란데',6100);
+INSERT INTO coffeeMenu
+VALUES (coffee_seq.nextval,'화이트 초콜릿 모카','벤티',6600);
+
+INSERT INTO coffeeMenu
+VALUES (coffee_seq.nextval,'카페 모카','톨',5100);
+INSERT INTO coffeeMenu
+VALUES (coffee_seq.nextval,'카페 모카','그란데',5600);
+INSERT INTO coffeeMenu
+VALUES (coffee_seq.nextval,'카페 모카','벤티',6100);
+
+INSERT INTO coffeeMenu
+VALUES (coffee_seq.nextval,'카페 라떼','톨',4600);
+INSERT INTO coffeeMenu
+VALUES (coffee_seq.nextval,'카페 라떼','그란데',5100);
+INSERT INTO coffeeMenu
+VALUES (coffee_seq.nextval,'카페 라떼','벤티',5600);
+
+INSERT INTO coffeeMenu
+VALUES (coffee_seq.nextval,'아메리카노','톨',4100);
+INSERT INTO coffeeMenu
+VALUES (coffee_seq.nextval,'아메리카노','그란데',4600);
+INSERT INTO coffeeMenu
+VALUES (coffee_seq.nextval,'아메리카노','벤티',5100);
+
+INSERT INTO coffeeMenu
+VALUES (coffee_seq.nextval,'오늘의 커피','톨',3800);
+INSERT INTO coffeeMenu
+VALUES (coffee_seq.nextval,'오늘의 커피','그란데',4300);
+INSERT INTO coffeeMenu
+VALUES (coffee_seq.nextval,'오늘의 커피','벤티',4800);
+
+INSERT INTO coffeeMenu
+VALUES (coffee_seq.nextval,'블론드 바닐라 더블샷 마키야또','톨',5600);
+INSERT INTO coffeeMenu
+VALUES (coffee_seq.nextval,'블론드 바닐라 더블샷 마키야또','그란데',6100);
+INSERT INTO coffeeMenu
+VALUES (coffee_seq.nextval,'블론드 바닐라 더블샷 마키야또','벤티',6600);
+
+select * FROM coffeeMenu;
+
+SELECT DISTINCT(coffeeName) FROM coffeeMenu;
 COMMIT;
