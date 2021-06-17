@@ -121,3 +121,37 @@ VALUES (product_seq.nextval,'토비의 스프링 3.1',67500,'05_spring.jpg','스프링의 
 commit;
 
 select * FROM productTbl;
+
+CREATE TABLE board(
+    num NUMBER(5) PRIMARY KEY,
+    pass VARCHAR2(30),
+    name VARCHAR2(30),
+    email VARCHAR2(30),
+    title VARCHAR2(50),
+    content VARCHAR2(1000),
+    readcount NUMBER(4) DEFAULT 0,
+    writedate DATE DEFAULT sysdate
+);
+
+CREATE SEQUENCE board_seq
+NOCACHE;
+
+INSERT INTO board(num,name,email,pass,title,content)
+VALUES (board_seq.nextval,'홍길동','hong@naver.com','1234','첫 방문','왔다 갑니다.');
+
+INSERT INTO board(num,name,email,pass,title,content)
+VALUES (board_seq.nextval,'김길동','kimk@naver.com','1234','반가워요','대출은 000-0000-0000으로.');
+
+INSERT INTO board(num,name,email,pass,title,content)
+VALUES (board_seq.nextval,'고길동','ko@naver.com','1234','안녕하세요','건강하시죠.');
+
+INSERT INTO board(num,name,email,pass,title,content)
+VALUES (board_seq.nextval,'홍길동','hong@naver.com','1234','두번째 방문','이제 이것은 제겁니다.');
+
+INSERT INTO board(num,name,email,pass,title,content)
+VALUES (board_seq.nextval,'박길동','park@naver.com','1234','밥먹음?','치킨먹자.');
+
+SELECT * FROM board;
+
+
+COMMIT;
