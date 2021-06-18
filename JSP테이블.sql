@@ -153,5 +153,69 @@ VALUES (board_seq.nextval,'박길동','park@naver.com','1234','밥먹음?','치킨먹자.'
 
 SELECT * FROM board;
 
+INSERT INTO board(num,name,email,pass,title,content)
+VALUES (board_seq.nextval,'박길동','park@naver.com','1234','밥먹음?','치킨먹자.');
 
+DECLARE
+BEGIN
+    for i in 1..483 LOOP
+    INSERT INTO board(num,name,email,pass,title,content)
+    VALUES (board_seq.nextval,'테스트'||i,'test'||i||'@naver.com','1234','테스트'||i,'테스트'||i||' : TEST'||i);    
+    END LOOP;
+END;
 COMMIT;
+
+---------------------------------------------------------
+-- ROWNUM (행번호)
+SELECT * 
+FROM (SELECT ROWNUM as nic, num, name 
+        FROM (SELECT * FROM board ORDER BY num DESC))
+WHERE nic BETWEEN (section-1)*100+(pageNum-1)*10+1 AND (section-1)*100+pageNum*10;
+
+SELECT COUNT(*) FROM board;
+
+DELETE FROM board;
+drop SEQUENCE board_seq;
+
+CREATE SEQUENCE board_seq
+NOCACHE;
+
+
+------------------------------------------------------------------------
+CREATE TABLE favoriteMovie (
+    code VARCHAR2(30) PRIMARY KEY,
+    title VARCHAR2(30) NOT NULL,
+    director VARCHAR2(30),
+    actor VARCHAR2(30),
+    price NUMBER,
+    content VARCHAR2(1000),
+    score Number(4,2),
+    readcount NUMBER(2) DEFAULT 0,
+    userid varchar2(10) NOT NULL,
+    userpwd varchar2 (10) NOT NULL,
+    steelcut varchar2(30)
+);
+
+CREATE SEQUENCE movie_seq
+NOCACHE;
+
+INSERT INTO favoriteMovie (code, title, director, actor, price, content, score, userid, userpwd, steelcut)
+VALUES ('movie_'||movie_seq.nextVal,'콰이어트 플레이스2','존 크래신스키','에밀리 블런트',12000,'실체를 알 수 없는 괴생명체의 공격으로 일상의 모든 것이 사라진 세상, 아이들 대신 죽음을 선택한 아빠의 희생 이후 살아남은 가족들은 위험에 노출된다.',8.82,'gkrwnsvb','123','movie01_image.jpg');
+
+commit;
+--------------------------------------
+select * FROM favoriteMovie;
+
+drop TABLE favoriteMovie;
+drop SEQUENCE movie_seq;
+DELETE FROM favoriteMoive;
+
+SELECT * FROM (SELECT ROWNUM AS countRow, code, title, director, actor, price, content, score, readcount, userid, userpwd, steelcut
+						FROM (SELECT * FROM favoriteMoive ORDER BY code DESC))
+							WHERE countRow BETWEEN (section-1)*100+(page-1)*10+1 AND (section-1)*100+page*10;
+                            
+                            
+                            SELECT * 
+FROM (SELECT ROWNUM as nic, num, name 
+        FROM (SELECT * FROM board ORDER BY num DESC))
+WHERE nic BETWEEN (section-1)*100+(pageNum-1)*10+1 AND (section-1)*1
