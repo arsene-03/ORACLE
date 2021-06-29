@@ -195,3 +195,18 @@ drop SEQUENCE lecturer_seq;
 
 
 COMMIT;
+
+---------------------------------------------------------------------------------
+
+CREATE TABLE MemberTest(
+    userID VARCHAR2(10) PRIMARY KEY,
+    userName VARCHAR2(10),
+    usePwd VARCHAR2(10)
+);
+
+INSERT INTO MemberTest
+VALUES('gkrwnsvb','√÷«–¡ÿ','1234');
+
+SELECT * FROM MemberTest;
+
+commit;
